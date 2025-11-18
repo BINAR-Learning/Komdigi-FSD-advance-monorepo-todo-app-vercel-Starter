@@ -1,0 +1,71 @@
+# TODO: CI/CD Pipeline Configuration
+#
+# TASK 1: Workflow Name and Triggers
+# - name: CI/CD Pipeline - Fullstack Vercel Deployment
+# - on:
+#     push:
+#       branches: [main, develop]
+#     pull_request:
+#       branches: [main]
+#
+# TASK 2: Test Job
+# - runs-on: ubuntu-latest
+# - steps:
+#     * Checkout code
+#     * Setup Node.js 22
+#     * Install pnpm
+#     * Install dependencies (pnpm install --frozen-lockfile)
+#     * Run tests (pnpm test)
+#
+# TASK 3: Build Frontend Job
+# - needs: test
+# - runs-on: ubuntu-latest
+# - if: github.ref == 'refs/heads/main'
+# - steps:
+#     * Checkout code
+#     * Setup Node.js 22
+#     * Install pnpm
+#     * Install dependencies
+#     * Build frontend (pnpm --filter frontend exec vite build)
+#     * Set env: VITE_API_URL
+#
+# TASK 4: Deploy Frontend to Vercel Job
+# - needs: build-frontend
+# - runs-on: ubuntu-latest
+# - if: github.ref == 'refs/heads/main'
+# - environment: production
+# - steps:
+#     * Checkout code
+#     * Setup Node.js 22
+#     * Install pnpm
+#     * Install dependencies
+#     * Install Vercel CLI
+#     * Verify/Create Vercel Frontend Project
+#     * Deploy to Vercel using amondnet/vercel-action@v25
+#     * Use secrets: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_FRONTEND_PROJECT_ID
+#
+# TASK 5: Deploy Backend to Vercel Job
+# - needs: test
+# - runs-on: ubuntu-latest
+# - if: github.ref == 'refs/heads/main'
+# - environment: production
+# - steps:
+#     * Checkout code
+#     * Setup Node.js 22
+#     * Install pnpm
+#     * Install dependencies
+#     * Install Vercel CLI
+#     * Verify/Create Vercel Backend Project
+#     * Deploy to Vercel using amondnet/vercel-action@v25
+#     * working-directory: ./apps/backend
+#     * Use secrets: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_BACKEND_PROJECT_ID
+#
+# TASK 6: Notify Job
+# - needs: [deploy-backend-vercel, deploy-frontend-vercel]
+# - runs-on: ubuntu-latest
+# - if: always() && github.ref == 'refs/heads/main'
+# - steps:
+#     * Show deployment status for both backend and frontend
+#
+# NOTE: See the finished project for complete implementation reference
+
