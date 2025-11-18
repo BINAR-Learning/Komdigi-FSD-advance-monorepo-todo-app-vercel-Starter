@@ -6,6 +6,9 @@ node_modules/
 # Testing
 coverage/
 .nyc_output
+test-results/
+playwright-report/
+playwright/.cache/
 
 # Production
 dist/
@@ -13,13 +16,14 @@ build/
 .next/
 out/
 
-# Misc
-.DS_Store
-*.pem
+# Environment
 .env
 .env.local
-.env.*.local
-.env.production
+.env.development.local
+.env.test.local
+.env.production.local
+# Allow .env.example files
+!.env.example
 
 # Logs
 logs
@@ -30,8 +34,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Turbo
-.turbo
+# OS
+.DS_Store
+*.pem
+Thumbs.db
 
 # IDE
 .vscode/
@@ -40,6 +46,21 @@ lerna-debug.log*
 *.swo
 *~
 
-# OS
-Thumbs.db
+# Turbo
+.turbo/
+
+# Docker
+.dockerignore
+
+# Misc
+*.tsbuildinfo
+
+# Vercel
+.vercel
+
+# Railway
+.railway
+
+# Documentation (exclude from git but keep locally)
+docs/
 

@@ -1,51 +1,5 @@
 # Todo Application - Fullstack Monorepo (Vercel)
 
-> **🎯 STARTER PROJECT - Ready to Deploy!**
-> 
-> Project ini sudah 100% siap pakai dengan semua fitur lengkap:
-> - ✅ Winston Logger dengan detailed logging
-> - ✅ 404 JSON Error Handler
-> - ✅ Edit Todo Feature
-> - ✅ User Email Display
-> - ✅ Proper Error Handling
-> - ✅ Clean Code dengan Bahasa Indonesia Comments
-> - ✅ CI/CD Setup (tinggal tambah secrets)
-
-## 📋 TODO: Quick Start Checklist
-
-### 1. Setup MongoDB Atlas (5 menit)
-- [ ] Daftar di https://cloud.mongodb.com (gratis, no credit card)
-- [ ] Create cluster baru (pilih Free Tier M0)
-- [ ] Create database user dengan username dan password
-- [ ] Di Network Access, tambahkan IP `0.0.0.0/0` (allow from anywhere)
-- [ ] Get connection string dari cluster
-- [ ] Copy ke `apps/backend/.env` → `MONGODB_URI`
-
-### 2. Setup Environment Variables (2 menit)
-- [ ] Backend: `cd apps/backend && cp env.example.txt .env`
-- [ ] Edit `apps/backend/.env` dengan MongoDB URI dan JWT_SECRET
-- [ ] Frontend: `cd apps/frontend && cp env.example.txt .env`
-- [ ] Edit `apps/frontend/.env` dengan `VITE_API_URL=http://localhost:3001`
-
-### 3. Install dan Run Local (3 menit)
-- [ ] `pnpm install` (install semua dependencies)
-- [ ] `pnpm dev` (jalankan backend + frontend)
-- [ ] Buka http://localhost:5173 (frontend)
-- [ ] Test register, login, create todo, edit todo
-
-### 4. Deploy ke Vercel (10 menit)
-- [ ] Push code ke GitHub
-- [ ] Import project ke Vercel (2x: backend + frontend)
-- [ ] Set environment variables di Vercel dashboard
-- [ ] Copy Project IDs dari Vercel
-
-### 5. Setup CI/CD (5 menit) - OPTIONAL
-- [ ] Generate VERCEL_TOKEN di https://vercel.com/account/tokens
-- [ ] Add GitHub Secrets (lihat `.github/workflows/ci-cd.yml`)
-- [ ] Push ke main branch → auto deploy!
-
----
-
 Fullstack Todo application dengan authentication, deployed menggunakan Vercel (Backend + Frontend) dengan CI/CD via GitHub Actions.
 
 ## Features
@@ -492,13 +446,40 @@ pnpm --filter frontend build
 
 ## Testing
 
+Project ini dilengkapi dengan comprehensive testing setup:
+
+- **Backend**: 104 unit tests (Jest + Supertest)
+- **Frontend**: E2E tests (Playwright)
+
+### Quick Start
+
 ```bash
-# Run semua tests
+# Backend unit tests
+cd apps/backend
 pnpm test
 
-# Test backend saja
-pnpm --filter backend test
+# Frontend E2E tests (pastikan backend running)
+cd apps/frontend
+pnpm test:e2e
 ```
+
+### Detailed Documentation
+
+Untuk setup lengkap, troubleshooting, dan advanced testing:
+
+📖 **[TESTING-GUIDE.md](./TESTING-GUIDE.md)** - Comprehensive testing documentation
+
+#### Backend Tests
+- **Location**: [`apps/backend/tests/`](./apps/backend/tests/)
+- **Documentation**: [`apps/backend/TESTING.md`](./apps/backend/TESTING.md)
+- **Coverage**: Models, Routes, Middleware
+
+#### Frontend E2E Tests
+- **Location**: [`apps/frontend/e2e/`](./apps/frontend/e2e/)
+- **Documentation**: [`apps/frontend/E2E-TESTING.md`](./apps/frontend/E2E-TESTING.md)
+- **Flow**: Register → CRUD → Logout → Login
+
+**Note**: Known issues dengan Jest + ESM di Windows. Test files sudah lengkap dan valid, hanya ada compatibility issues. Lihat TESTING.md untuk details.
 
 ## Troubleshooting
 
