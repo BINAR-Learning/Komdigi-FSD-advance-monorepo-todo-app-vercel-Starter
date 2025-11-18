@@ -1,1074 +1,682 @@
-# Final Project Starter - Todo Application Fullstack Monorepo
+# Todo Application - Fullstack Monorepo (Vercel)
 
-**✅ Aplikasi sudah COMPLETE dan siap digunakan!**
+> **🎯 STARTER PROJECT - Ready to Deploy!**
+> 
+> Project ini sudah 100% siap pakai dengan semua fitur lengkap:
+> - ✅ Winston Logger dengan detailed logging
+> - ✅ 404 JSON Error Handler
+> - ✅ Edit Todo Feature
+> - ✅ User Email Display
+> - ✅ Proper Error Handling
+> - ✅ Clean Code dengan Bahasa Indonesia Comments
+> - ✅ CI/CD Setup (tinggal tambah secrets)
 
-**Tugas Anda:** Setup deployment (CI/CD, Vercel, GitHub Actions, MongoDB Atlas) - Berlatih menjadi DevOps Engineer
+## 📋 TODO: Quick Start Checklist
 
-## 📋 Daftar Isi
+### 1. Setup MongoDB Atlas (5 menit)
+- [ ] Daftar di https://cloud.mongodb.com (gratis, no credit card)
+- [ ] Create cluster baru (pilih Free Tier M0)
+- [ ] Create database user dengan username dan password
+- [ ] Di Network Access, tambahkan IP `0.0.0.0/0` (allow from anywhere)
+- [ ] Get connection string dari cluster
+- [ ] Copy ke `apps/backend/.env` → `MONGODB_URI`
 
-1. [Overview](#overview)
-2. [Status Project](#status-project)
-3. [Prerequisites](#prerequisites)
-4. [Struktur Project](#struktur-project)
-5. [Instalasi dan Setup](#instalasi-dan-setup)
-6. [Testing Aplikasi Lokal](#testing-aplikasi-lokal)
-7. [Tugas Deployment - DevOps](#tugas-deployment---devops)
-8. [Environment Variables](#environment-variables)
-9. [Troubleshooting](#troubleshooting)
+### 2. Setup Environment Variables (2 menit)
+- [ ] Backend: `cd apps/backend && cp env.example.txt .env`
+- [ ] Edit `apps/backend/.env` dengan MongoDB URI dan JWT_SECRET
+- [ ] Frontend: `cd apps/frontend && cp env.example.txt .env`
+- [ ] Edit `apps/frontend/.env` dengan `VITE_API_URL=http://localhost:3001`
+
+### 3. Install dan Run Local (3 menit)
+- [ ] `pnpm install` (install semua dependencies)
+- [ ] `pnpm dev` (jalankan backend + frontend)
+- [ ] Buka http://localhost:5173 (frontend)
+- [ ] Test register, login, create todo, edit todo
+
+### 4. Deploy ke Vercel (10 menit)
+- [ ] Push code ke GitHub
+- [ ] Import project ke Vercel (2x: backend + frontend)
+- [ ] Set environment variables di Vercel dashboard
+- [ ] Copy Project IDs dari Vercel
+
+### 5. Setup CI/CD (5 menit) - OPTIONAL
+- [ ] Generate VERCEL_TOKEN di https://vercel.com/account/tokens
+- [ ] Add GitHub Secrets (lihat `.github/workflows/ci-cd.yml`)
+- [ ] Push ke main branch → auto deploy!
 
 ---
 
-## 🎯 Overview
+Fullstack Todo application dengan authentication, deployed menggunakan Vercel (Backend + Frontend) dengan CI/CD via GitHub Actions.
 
-Project ini adalah **COMPLETE Fullstack Todo Application** dengan fitur:
+## Features
 
-- ✅ **User Authentication** (Register/Login dengan JWT)
-- ✅ **Todo CRUD Operations** (Create, Read, Update, Delete)
-- ✅ **Monorepo Structure** dengan PNPM dan Turbo
-- ✅ **Backend API** dengan Express + MongoDB
-- ✅ **Frontend** dengan React + Vite
-- ✅ **CI/CD Pipeline** dengan GitHub Actions
-- ✅ **Deployment** ke Vercel (Backend + Frontend)
+- User Authentication (Register/Login dengan JWT)
+- Todo CRUD Operations (Create, Read, Update, Delete)
+- JWT-based Authentication
+- RESTful API
+- React Frontend dengan modern UI
+- MongoDB Atlas integration
+- CI/CD dengan GitHub Actions
+- Backend deployed ke Vercel (Serverless Functions)
+- Frontend deployed ke Vercel (Static Site)
+- 100% Free Tier (No Credit Card Required)
 
-### Tech Stack
+## Tech Stack
 
-**Backend:**
+### Backend
 - Node.js 22 LTS
-- Express 5
-- MongoDB dengan Mongoose
-- JWT Authentication
-- Swagger/OpenAPI Documentation
+- Express 5 - Web framework
+- MongoDB dengan Mongoose - Database
+- JWT - Authentication
+- Vercel Serverless Functions
 
-**Frontend:**
-- React 19
-- Vite
-- React Router
-- Axios
+### Frontend
+- React 19 - UI library
+- Vite - Build tool
+- React Router - Routing
+- Axios - HTTP client
 
-**Infrastructure:**
-- PNPM Workspace
-- Turbo Build System
-- GitHub Actions
-- Vercel (Serverless)
+### Infrastructure
+- Vercel - Backend (Serverless) + Frontend (Static Site)
+- MongoDB Atlas - Database (Free Tier)
+- GitHub Actions - CI/CD Pipeline
+- Turbo - Monorepo build system
 
----
+## Project Structure
 
-## 📦 Prerequisites
+```
+monorepo-todo-auth-vercel-finished/
+├── apps/
+│   ├── backend/              # Express API server (Vercel Serverless)
+│   │   ├── api/              # Vercel serverless function wrapper
+│   │   ├── src/              # Source code
+│   │   │   ├── routes/       # API routes
+│   │   │   ├── models/       # MongoDB models
+│   │   │   └── middleware/   # Auth middleware
+│   │   ├── vercel.json       # Vercel configuration
+│   │   └── .env.example      # Environment variables template
+│   └── frontend/             # React application
+│       ├── src/              # Source code
+│       │   ├── pages/        # React pages
+│       │   └── utils/        # Utilities
+│       ├── vercel.json       # Vercel configuration
+│       └── .env.example      # Environment variables template
+├── .github/
+│   └── workflows/            # CI/CD pipelines
+└── turbo.json               # Turbo configuration
+```
 
-Sebelum memulai, pastikan Anda sudah menginstall:
+## Prerequisites
 
-- **Node.js 22 LTS** atau lebih baru
-- **PNPM 9** (atau npm 10)
-- **Git**
-- **MongoDB Atlas account** (Free Tier) - https://cloud.mongodb.com
-- **Vercel account** (Free Tier) - https://vercel.com
-- **GitHub account** (untuk CI/CD)
+Sebelum memulai, pastikan Anda sudah memiliki:
 
-### Install PNPM
+- Node.js 22 LTS atau lebih baru
+- pnpm 9 (atau npm 10)
+- MongoDB Atlas account (Free Tier) - https://cloud.mongodb.com
+- Vercel account (Free Tier) - https://vercel.com
+- GitHub account (untuk CI/CD)
 
+**PENTING: Install pnpm terlebih dahulu**
 ```bash
 npm install -g pnpm
 ```
 
-Verifikasi instalasi:
+## Quick Start
+
+### 1. Clone Repository
 
 ```bash
-pnpm --version
-```
-
----
-
-## 📁 Struktur Project
-
-```
-monorepo-todo-auth-vercel-starter/
-├── apps/
-│   ├── backend/              # Express API Server
-│   │   ├── api/              # Vercel serverless wrapper
-│   │   │   └── index.js      # TODO: Vercel serverless handler
-│   │   ├── src/
-│   │   │   ├── app.js        # TODO: Express app setup
-│   │   │   ├── index.js      # TODO: Server entry point
-│   │   │   ├── models/       # MongoDB models
-│   │   │   │   ├── User.js   # TODO: User model
-│   │   │   │   └── Todo.js   # TODO: Todo model
-│   │   │   ├── routes/       # API routes
-│   │   │   │   ├── auth.js   # TODO: Auth routes (register, login)
-│   │   │   │   └── todos.js  # TODO: Todo routes (CRUD)
-│   │   │   └── middleware/
-│   │   │       └── auth.js   # TODO: JWT authentication middleware
-│   │   ├── tests/
-│   │   │   ├── unit/         # TODO: Unit tests
-│   │   │   └── integration/  # TODO: Integration tests
-│   │   ├── package.json
-│   │   ├── vercel.json       # Vercel configuration
-│   │   └── env.example.txt   # Environment variables template
-│   │
-│   └── frontend/             # React Application
-│       ├── src/
-│       │   ├── pages/
-│       │   │   ├── Login.jsx     # TODO: Login page
-│       │   │   ├── Register.jsx  # TODO: Register page
-│       │   │   └── Dashboard.jsx # TODO: Dashboard/Todo page
-│       │   ├── utils/
-│       │   │   ├── api.js    # TODO: API utility functions
-│       │   │   └── auth.js   # TODO: Auth utility functions
-│       │   ├── App.jsx       # TODO: Main app component with routing
-│       │   ├── main.jsx      # TODO: Entry point
-│       │   └── index.css     # TODO: Global styles
-│       ├── index.html
-│       ├── vite.config.js    # TODO: Vite configuration
-│       ├── package.json
-│       ├── vercel.json       # Vercel configuration
-│       └── env.example.txt   # Environment variables template
-│
-├── packages/
-│   └── shared/               # Shared utilities
-│       ├── index.js          # TODO: Shared functions
-│       └── package.json
-│
-├── .github/
-│   └── workflows/
-│       └── ci-cd.yml         # TODO: CI/CD pipeline
-│
-├── package.json              # Root package.json
-├── pnpm-workspace.yaml       # PNPM workspace config
-├── turbo.json                # Turbo build config
-└── README.md                 # This file
-```
-
----
-
-## 🚀 Instalasi dan Setup
-
-### Step 1: Clone atau Copy Project
-
-```bash
-# Jika menggunakan git
 git clone <repository-url>
-cd monorepo-todo-auth-vercel-starter
-
-# Atau copy folder ini ke lokasi yang diinginkan
+cd monorepo-todo-auth-vercel-finished
 ```
 
-### Step 2: Install Dependencies
+### 2. Install Dependencies
 
 ```bash
-# Install semua dependencies untuk semua workspaces
+# Install dependencies untuk semua apps (backend + frontend)
 pnpm install
 ```
 
-### Step 3: Setup Environment Variables
+### 3. Setup Environment Variables
 
-**Backend:**
-
+**Backend** (apps/backend/.env):
 ```bash
-# Copy env example
-cp apps/backend/env.example.txt apps/backend/.env
-
-# Edit apps/backend/.env dengan editor Anda
-# Isi dengan MongoDB URI dan JWT Secret
+cd apps/backend
+cp .env.example .env
 ```
 
-**Frontend:**
-
-```bash
-# Copy env example
-cp apps/frontend/env.example.txt apps/frontend/.env
-
-# Edit apps/frontend/.env dengan editor Anda
-# Isi dengan backend API URL
-```
-
-### Step 4: Setup MongoDB Atlas
-
-1. Sign up di https://cloud.mongodb.com
-2. Create free cluster (M0)
-3. Create database user (username & password)
-4. Get connection string
-5. **IMPORTANT:** Add IP whitelist `0.0.0.0/0` (allow from anywhere)
-6. Update `MONGODB_URI` di `apps/backend/.env`
-
----
-
-## ✅ Status Project
-
-### **Aplikasi Sudah Complete! 🎉**
-
-Semua kode aplikasi sudah diimplementasikan dan siap digunakan:
-
-- ✅ **Backend API** - Express dengan MongoDB, JWT Auth, Swagger docs
-- ✅ **Frontend** - React dengan routing, authentication, CRUD operations
-- ✅ **Models** - User dan Todo models dengan validasi
-- ✅ **Routes** - Auth routes (register/login) dan Todo routes (CRUD)
-- ✅ **Middleware** - JWT authentication middleware
-- ✅ **UI Components** - Login, Register, Dashboard pages
-- ✅ **API Integration** - Axios dengan interceptors
-- ✅ **Error Handling** - Complete error handling di semua layer
-
-### **Yang Perlu Anda Lakukan:**
-
-**Hanya Deployment & DevOps Setup!** 🚀
-
-1. ✅ Setup MongoDB Atlas
-2. ✅ Setup Vercel Projects (Backend + Frontend)
-3. ✅ Setup GitHub Actions CI/CD Pipeline
-4. ✅ Configure GitHub Secrets
-5. ✅ Configure Vercel Environment Variables
-6. ✅ Deploy dan Test
-
----
-
-## 🧪 Testing Aplikasi Lokal
-
-Sebelum deployment, test aplikasi di local terlebih dahulu:
-
-### Step 1: Setup Environment Variables
-
-**Backend (`apps/backend/.env`):**
+Edit file `.env` dan isi dengan:
 ```env
 PORT=3001
 NODE_ENV=development
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/todo-app
-JWT_SECRET=your-super-secret-jwt-key-minimum-32-characters-long
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/todo?retryWrites=true&w=majority
+JWT_SECRET=buatlah-secret-key-yang-panjang-minimal-32-karakter-atau-lebih
 JWT_EXPIRES_IN=7d
-API_URL=http://localhost:3001
 ```
 
-**Frontend (`apps/frontend/.env`):**
+**Frontend** (apps/frontend/.env):
+```bash
+cd ../frontend
+cp .env.example .env
+```
+
+Edit file `.env` dan isi dengan:
 ```env
 VITE_API_URL=http://localhost:3001
 ```
 
-### Step 2: Install Dependencies
+### 4. Setup MongoDB Atlas
 
-```bash
-pnpm install
-```
+1. Buat account di https://cloud.mongodb.com (gratis)
+2. Create cluster baru (pilih Free Tier M0)
+3. Create database user dengan username dan password
+4. PENTING: Di Network Access, tambahkan IP `0.0.0.0/0` (allow from anywhere) untuk free tier
+5. Get connection string dari cluster (klik Connect > Connect your application)
+6. Copy connection string ke `MONGODB_URI` di file `.env` backend
+7. Ganti `<username>`, `<password>`, dan nama database sesuai kebutuhan
 
-### Step 3: Run Applications
+### 5. Jalankan Development Server
 
 **Terminal 1 - Backend:**
 ```bash
-pnpm --filter backend dev
+cd apps/backend
+pnpm dev
 ```
+
+Server backend akan berjalan di: http://localhost:3001
 
 **Terminal 2 - Frontend:**
 ```bash
-pnpm --filter frontend dev
-```
-
-### Step 4: Test Aplikasi
-
-1. **Backend:**
-   - Health check: http://localhost:3001/health
-   - API Docs: http://localhost:3001/api-docs
-
-2. **Frontend:**
-   - Open: http://localhost:5173
-   - Register new user
-   - Login
-   - Create, update, delete todos
-
----
-
-## 🚀 Tugas Deployment - DevOps
-
-Ini adalah bagian utama yang perlu Anda kerjakan. Fokus pada **DevOps practices**:
-
-### Phase 1: Setup MongoDB Atlas (Week 1)
-
-#### Task 1.1: Create MongoDB Atlas Account
-
-1. Sign up di https://cloud.mongodb.com
-2. Create free cluster (M0)
-3. Create database user (username & password)
-4. Get connection string
-5. **IMPORTANT:** Add IP whitelist `0.0.0.0/0` (allow from anywhere)
-
-#### Task 1.2: Configure MongoDB
-
-1. Copy connection string
-2. Update `MONGODB_URI` di environment variables (akan digunakan di Vercel)
-
----
-
-### Phase 2: Setup Vercel Projects (Week 2)
-
-#### Task 2.1: Create Vercel Account
-
-1. Sign up di https://vercel.com (Free, no credit card)
-2. Connect GitHub account
-
-#### Task 2.2: Deploy Backend ke Vercel
-
-1. **Manual Deploy Pertama Kali:**
-   - Go to Vercel Dashboard
-   - Click "Add New Project"
-   - Import repository dari GitHub
-   - Configure:
-     - **Project Name:** `your-repo-name-backend`
-     - **Root Directory:** **KOSONGKAN** (biarkan kosong)
-     - **Framework Preset:** Other
-     - **Build Command:** (kosongkan)
-     - **Output Directory:** (kosongkan)
-   
-2. **Environment Variables:**
-   - `MONGODB_URI` - MongoDB connection string
-   - `JWT_SECRET` - Random secret key (min 32 chars)
-   - `JWT_EXPIRES_IN` - `7d`
-   - `NODE_ENV` - `production`
-
-3. **Settings:**
-   - **Root Directory:** KOSONGKAN
-   - **Git > Production Branch:** `main`
-   - **Git > Auto Deploy:** **DISABLE**
-
-4. **Deploy & Get Project ID:**
-   - Deploy sekali secara manual
-   - Copy **Project ID** dari Settings > General
-   - Save untuk GitHub Secrets
-
-#### Task 2.3: Deploy Frontend ke Vercel
-
-1. **Manual Deploy Pertama Kali:**
-   - Click "Add New Project" lagi
-   - Import repository yang sama
-   - Configure:
-     - **Project Name:** `your-repo-name-frontend`
-     - **Root Directory:** **KOSONGKAN**
-     - **Framework Preset:** Vite (auto-detect)
-     - **Build Command:** `pnpm build` (auto-detect)
-     - **Output Directory:** `dist` (auto-detect)
-
-2. **Environment Variables:**
-   - `VITE_API_URL` - Backend Vercel URL (contoh: `https://your-backend.vercel.app`)
-
-3. **Settings:**
-   - **Root Directory:** KOSONGKAN
-   - **Git > Production Branch:** `main`
-   - **Git > Auto Deploy:** **DISABLE**
-
-4. **Deploy & Get Project ID:**
-   - Deploy sekali secara manual
-   - Copy **Project ID** dari Settings > General
-   - Save untuk GitHub Secrets
-
----
-
-### Phase 3: Setup GitHub Actions CI/CD (Week 3)
-
-#### Task 3.1: Get Vercel Credentials
-
-1. **Vercel Token:**
-   - Go to https://vercel.com/account/tokens
-   - Create new token
-   - Copy token
-
-2. **Vercel User ID:**
-   - Go to Vercel Dashboard > Settings > General
-   - Copy User ID
-
-3. **Vercel Org ID (Optional):**
-   - Jika menggunakan team, copy Org ID
-
-#### Task 3.2: Configure GitHub Secrets
-
-Go to GitHub Repository > Settings > Secrets and variables > Actions:
-
-**Required Secrets:**
-- `VERCEL_TOKEN` - Vercel token dari step 3.1
-- `VERCEL_USER_ID` - User ID dari Vercel
-- `VERCEL_ORG_ID` - (Optional) Org ID jika menggunakan team
-- `VERCEL_BACKEND_PROJECT_ID` - Backend Project ID dari Task 2.2
-- `VERCEL_FRONTEND_PROJECT_ID` - Frontend Project ID dari Task 2.3
-- `VITE_API_URL` - Backend Vercel URL (untuk frontend build)
-
-#### Task 3.3: Complete CI/CD Workflow
-
-**File:** `.github/workflows/ci-cd.yml`
-
-**TODO:** Implementasi CI/CD pipeline:
-
-1. **Test Job:**
-   - Run tests pada setiap push
-   - Setup Node.js 22
-   - Install pnpm
-   - Run `pnpm test`
-
-2. **Build Frontend Job:**
-   - Build frontend dengan Vite
-   - Set environment variable `VITE_API_URL`
-   - Only run on `main` branch
-
-3. **Deploy Frontend Job:**
-   - Deploy frontend ke Vercel
-   - Use `amondnet/vercel-action@v25`
-   - Configure dengan secrets
-   - Only run on `main` branch
-
-4. **Deploy Backend Job:**
-   - Deploy backend ke Vercel
-   - Use `amondnet/vercel-action@v25`
-   - Set `working-directory: ./apps/backend`
-   - Configure dengan secrets
-   - Only run on `main` branch
-
-5. **Notify Job:**
-   - Show deployment status
-   - Notify success/failure
-
-**Reference:** Lihat finished project untuk implementasi lengkap
-
----
-
-### Phase 4: Testing & Verification (Week 4)
-
-#### Task 4.1: Test Deployment
-
-1. Push code ke `main` branch
-2. Check GitHub Actions logs
-3. Verify deployments di Vercel
-4. Test deployed applications:
-   - Backend: `https://your-backend.vercel.app/health`
-   - Frontend: `https://your-frontend.vercel.app`
-   - API Docs: `https://your-backend.vercel.app/api-docs`
-
-#### Task 4.2: End-to-End Testing
-
-1. Register new user di production
-2. Login
-3. Create todos
-4. Update todos
-5. Delete todos
-6. Test error cases
-
-#### Task 4.3: Monitor & Debug
-
-1. Check Vercel logs untuk errors
-2. Check MongoDB Atlas logs
-3. Monitor GitHub Actions runs
-4. Fix any issues
-
----
-
-## 📝 Tugas Development - Sequential Guide (ARCHIVED)
-
-> **Note:** Kode aplikasi sudah complete. Bagian ini hanya untuk referensi jika ingin memahami implementasi.
-
-<details>
-<summary>Klik untuk melihat detail implementasi (sudah complete)</summary>
-
-### Phase 1: Backend Setup (Week 1)
-
-#### Task 1.1: Setup Express Application
-
-**File:** `apps/backend/src/app.js`
-
-1. Import semua module yang diperlukan
-2. Setup Swagger/OpenAPI configuration
-3. Initialize Express app
-4. Setup middleware (CORS, JSON parser, Swagger UI)
-5. Setup database connection function
-6. Setup health check routes
-7. Mount API routes
-8. Setup error handling
-9. Export startServer function
-
-**Testing:**
-```bash
-cd apps/backend
-pnpm dev
-# Test: http://localhost:3001/health
-```
-
-#### Task 1.2: User Model
-
-**File:** `apps/backend/src/models/User.js`
-
-1. Define User schema (email, password)
-2. Setup password hashing middleware (pre-save hook)
-3. Create comparePassword method
-4. Export User model
-
-**Testing:**
-- Test di MongoDB Compass atau via API
-
-#### Task 1.3: Todo Model
-
-**File:** `apps/backend/src/models/Todo.js`
-
-1. Define Todo schema (title, completed, user)
-2. Setup relationship dengan User model
-3. Export Todo model
-
-#### Task 1.4: Authentication Middleware
-
-**File:** `apps/backend/src/middleware/auth.js`
-
-1. Extract JWT token dari Authorization header
-2. Verify JWT token
-3. Find user dari database
-4. Attach user ke request object
-5. Handle errors
-
-**Testing:**
-- Test dengan protected route
-
-#### Task 1.5: Auth Routes
-
-**File:** `apps/backend/src/routes/auth.js`
-
-1. **POST /register:**
-   - Validate input (email, password)
-   - Check if user exists
-   - Create new user
-   - Hash password
-   - Generate JWT token
-   - Return token and user info
-
-2. **POST /login:**
-   - Validate input
-   - Find user by email
-   - Compare password
-   - Generate JWT token
-   - Return token and user info
-
-3. Add Swagger documentation
-
-**Testing:**
-```bash
-# Test register
-curl -X POST http://localhost:3001/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","password":"password123"}'
-
-# Test login
-curl -X POST http://localhost:3001/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","password":"password123"}'
-```
-
-#### Task 1.6: Todo Routes
-
-**File:** `apps/backend/src/routes/todos.js`
-
-1. Apply authentication middleware to all routes
-2. **GET /todos:** Get all todos for authenticated user
-3. **POST /todos:** Create new todo
-4. **GET /todos/:id:** Get todo by ID (with ownership check)
-5. **PUT /todos/:id:** Update todo (with ownership check)
-6. **DELETE /todos/:id:** Delete todo (with ownership check)
-7. Add Swagger documentation
-
-**Testing:**
-```bash
-# Get token from login first
-TOKEN="your-jwt-token"
-
-# Get all todos
-curl -X GET http://localhost:3001/api/todos \
-  -H "Authorization: Bearer $TOKEN"
-
-# Create todo
-curl -X POST http://localhost:3001/api/todos \
-  -H "Authorization: Bearer $TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"title":"My first todo"}'
-```
-
-#### Task 1.7: Server Entry Point
-
-**File:** `apps/backend/src/index.js`
-
-1. Import startServer from app.js
-2. Call startServer()
-
-**Testing:**
-```bash
-pnpm --filter backend dev
-# Server should start on port 3001
-```
-
-#### Task 1.8: Vercel Serverless Wrapper
-
-**File:** `apps/backend/api/index.js`
-
-1. Import serverless-http
-2. Import Express app
-3. Wrap app with serverless-http
-4. Export handler
-
-**Note:** Pastikan app.js juga export Express app instance (bukan hanya startServer)
-
----
-
-### Phase 2: Frontend Setup (Week 2)
-
-#### Task 2.1: Vite Configuration
-
-**File:** `apps/frontend/vite.config.js`
-
-1. Import defineConfig and react plugin
-2. Setup plugins
-3. Configure server with proxy for /api
-4. Export configuration
-
-**Testing:**
-```bash
-pnpm --filter frontend dev
-# Frontend should start on port 5173
-```
-
-#### Task 2.2: Auth Utilities
-
-**File:** `apps/frontend/src/utils/auth.js`
-
-1. saveToken(token) - Save to localStorage
-2. getToken() - Get from localStorage
-3. removeToken() - Remove from localStorage
-4. isAuthenticated() - Check if token exists
-5. logout() - Clear all auth data
-
-#### Task 2.3: API Utilities
-
-**File:** `apps/frontend/src/utils/api.js`
-
-1. Setup axios instance with baseURL
-2. Setup request interceptor (attach token)
-3. Setup response interceptor (handle 401)
-4. registerUser(email, password)
-5. loginUser(email, password)
-6. getTodos()
-7. createTodo(title)
-8. updateTodo(id, data)
-9. deleteTodo(id)
-
-#### Task 2.4: Login Page
-
-**File:** `apps/frontend/src/pages/Login.jsx`
-
-1. Create form with email and password inputs
-2. Handle form submission
-3. Call loginUser API
-4. Save token
-5. Redirect to dashboard
-6. Handle errors
-7. Add loading state
-8. Link to register page
-
-**Testing:**
-- Test login dengan user yang sudah terdaftar
-
-#### Task 2.5: Register Page
-
-**File:** `apps/frontend/src/pages/Register.jsx`
-
-1. Create form with email, password, confirmPassword
-2. Validate password match
-3. Handle form submission
-4. Call registerUser API
-5. Save token
-6. Redirect to dashboard
-7. Handle errors
-8. Add loading state
-9. Link to login page
-
-**Testing:**
-- Test register new user
-
-#### Task 2.6: Dashboard Page
-
-**File:** `apps/frontend/src/pages/Dashboard.jsx`
-
-1. Check authentication on mount
-2. Fetch todos on mount
-3. Create todo form
-4. Display todos list
-5. Toggle todo completed status
-6. Edit todo title
-7. Delete todo
-8. Logout functionality
-9. Handle loading and error states
-
-**Testing:**
-- Test semua CRUD operations
-- Test authentication check
-
-#### Task 2.7: App Component with Routing
-
-**File:** `apps/frontend/src/App.jsx`
-
-1. Setup BrowserRouter
-2. Create Routes:
-   - `/login` - Login page
-   - `/register` - Register page
-   - `/dashboard` - Dashboard page (protected)
-3. Setup authentication check
-4. Redirect logic
-
-#### Task 2.8: Entry Point
-
-**File:** `apps/frontend/src/main.jsx`
-
-1. Import React and ReactDOM
-2. Import App component
-3. Render App to root element
-
-**Testing:**
-```bash
-pnpm --filter frontend dev
-# Test semua routes
-```
-
----
-
-### Phase 3: Integration & Testing (Week 3)
-
-#### Task 3.1: End-to-End Testing
-
-1. Test complete user flow:
-   - Register → Login → Create Todo → Update Todo → Delete Todo → Logout
-2. Test error cases:
-   - Invalid credentials
-   - Unauthorized access
-   - Network errors
-
-#### Task 3.2: Unit Tests (Optional)
-
-**Files:** `apps/backend/tests/unit/`
-
-1. Test User model methods
-2. Test authentication middleware
-3. Test utility functions
-
-#### Task 3.3: Integration Tests (Optional)
-
-**Files:** `apps/backend/tests/integration/`
-
-1. Test auth routes
-2. Test todo routes
-3. Test database operations
-
----
-
-### Phase 4: Deployment Setup (Week 4)
-
-#### Task 4.1: Setup Vercel Projects
-
-1. **Backend Project:**
-   - Create project di Vercel
-   - Set root directory: KOSONGKAN
-   - Disable auto deploy
-   - Add environment variables
-   - Deploy manually
-   - Copy Project ID
-
-2. **Frontend Project:**
-   - Create project di Vercel
-   - Set root directory: KOSONGKAN
-   - Disable auto deploy
-   - Add environment variables
-   - Deploy manually
-   - Copy Project ID
-
-#### Task 4.2: Setup GitHub Secrets
-
-Go to GitHub Repository > Settings > Secrets and variables > Actions:
-
-- `VERCEL_TOKEN` - Get dari https://vercel.com/account/tokens
-- `VERCEL_USER_ID` - Get dari Vercel Dashboard
-- `VERCEL_ORG_ID` - (Optional) Jika menggunakan team
-- `VERCEL_BACKEND_PROJECT_ID` - Backend project ID
-- `VERCEL_FRONTEND_PROJECT_ID` - Frontend project ID
-- `VITE_API_URL` - Backend Vercel URL (untuk frontend build)
-
-#### Task 4.3: CI/CD Pipeline
-
-**File:** `.github/workflows/ci-cd.yml`
-
-1. Setup workflow triggers
-2. Test job
-3. Build frontend job
-4. Deploy frontend job
-5. Deploy backend job
-6. Notify job
-
-**Testing:**
-- Push to main branch
-- Check GitHub Actions logs
-- Verify deployments di Vercel
-
----
-
-## 🔐 Environment Variables
-
-### Backend (`apps/backend/.env`)
-
-```env
-PORT=3001
-NODE_ENV=development
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/todo-app
-JWT_SECRET=your-super-secret-jwt-key-minimum-32-characters-long
-JWT_EXPIRES_IN=7d
-API_URL=http://localhost:3001
-```
-
-### Frontend (`apps/frontend/.env`)
-
-```env
-VITE_API_URL=http://localhost:3001
-```
-
-**Untuk Production:**
-- Update `VITE_API_URL` dengan backend Vercel URL
-- Set environment variables di Vercel Dashboard
-
----
-
-## 🧪 Testing
-
-### Manual Testing
-
-**Backend:**
-```bash
-# Start backend
-pnpm --filter backend dev
-
-# Test health check
-curl http://localhost:3001/health
-
-# Test API docs
-# Open: http://localhost:3001/api-docs
-```
-
-**Frontend:**
-```bash
-# Start frontend
-pnpm --filter frontend dev
-
-# Open: http://localhost:5173
-```
-
-### Automated Testing
-
-```bash
-# Run all tests
-pnpm test
-
-# Run unit tests
-pnpm test:unit
-
-# Run integration tests
-pnpm test:integration
-```
-
----
-
-## 🚀 Deployment
-
-### Prerequisites
-
-1. ✅ MongoDB Atlas setup
-2. ✅ Vercel account
-3. ✅ GitHub repository
-4. ✅ GitHub Secrets configured
-5. ✅ Vercel projects created
-
-### Deployment Steps
-
-1. **Push code to GitHub:**
-   ```bash
-   git add .
-   git commit -m "Complete final project"
-   git push origin main
-   ```
-
-2. **GitHub Actions will automatically:**
-   - Run tests
-   - Build frontend
-   - Deploy frontend to Vercel
-   - Deploy backend to Vercel
-
-3. **Verify deployment:**
-   - Check GitHub Actions logs
-   - Check Vercel Dashboard
-   - Test deployed applications
-
----
-
-## 🐛 Troubleshooting
-
-### Backend Issues
-
-**Database Connection Error:**
-- Verify `MONGODB_URI` di `.env`
-- Check MongoDB Atlas IP whitelist (`0.0.0.0/0`)
-- Verify database user credentials
-
-**JWT Authentication Error:**
-- Verify `JWT_SECRET` is set (min 32 characters)
-- Check token format in Authorization header
-
-**Port Already in Use:**
-- Change PORT di `.env`
-- Or kill process using port 3001
-
-### Frontend Issues
-
-**API Connection Error:**
-- Verify `VITE_API_URL` di `.env`
-- Check backend is running
-- Check CORS configuration
-
-**Build Errors:**
-- Clear `node_modules` and reinstall
-- Check Node version (22+)
-- Check environment variables
-
-### Deployment Issues
-
-**Vercel Deployment Failed:**
-- Check GitHub Secrets
-- Verify Vercel Token
-- Check Project IDs
-- Review Vercel logs
-
-**CI/CD Pipeline Failed:**
-- Check GitHub Actions logs
-- Verify all secrets are set
-- Check workflow file syntax
-
----
-
-## 📚 Resources
-
-- [Express Documentation](https://expressjs.com)
-- [React Documentation](https://react.dev)
-- [MongoDB Atlas Documentation](https://docs.atlas.mongodb.com)
-- [Vercel Documentation](https://vercel.com/docs)
-- [GitHub Actions Documentation](https://docs.github.com/en/actions)
-- [PNPM Documentation](https://pnpm.io)
-- [Turbo Documentation](https://turbo.build)
-
----
-
-## ✅ Checklist Final Project
-
-### ✅ Aplikasi (Sudah Complete)
-- [x] Express app setup complete
-- [x] User model dengan password hashing
-- [x] Todo model dengan user relationship
-- [x] Authentication middleware
-- [x] Auth routes (register, login)
-- [x] Todo routes (CRUD) dengan authentication
-- [x] Swagger documentation
-- [x] Error handling
-- [x] Vercel serverless wrapper
-- [x] Vite configuration
-- [x] Auth utilities
-- [x] API utilities dengan interceptors
-- [x] Login page
-- [x] Register page
-- [x] Dashboard page dengan CRUD
-- [x] Routing setup
-- [x] Error handling
-- [x] Loading states
-
-### 🚀 Deployment (Tugas Anda)
-- [ ] MongoDB Atlas setup
-- [ ] Vercel projects created (Backend + Frontend)
-- [ ] Environment variables configured di Vercel
-- [ ] GitHub Secrets configured
-- [ ] CI/CD pipeline implemented (`.github/workflows/ci-cd.yml`)
-- [ ] Both apps deployed successfully
-- [ ] End-to-end testing di production
-- [ ] Monitoring & debugging setup
-
----
-
-## 🎓 Learning Objectives
-
-Setelah menyelesaikan deployment tasks, Anda akan memahami:
-
-1. ✅ **DevOps Practices:**
-   - CI/CD pipeline setup dengan GitHub Actions
-   - Environment variables management
-   - Secrets management
-   - Deployment automation
-
-2. ✅ **Cloud Services:**
-   - MongoDB Atlas setup dan configuration
-   - Vercel serverless deployment
-   - Static site deployment
-   - Environment configuration
-
-3. ✅ **Infrastructure:**
-   - Monorepo deployment strategy
-   - Separate backend/frontend deployments
-   - Production environment setup
-   - Monitoring dan debugging
-
-4. ✅ **Best Practices:**
-   - Secure credential management
-   - Automated testing in CI/CD
-   - Production deployment workflow
-   - Error monitoring
-
----
-
-**Selamat berlatih menjadi DevOps Engineer! 🚀**
-
-Aplikasi sudah complete dan siap digunakan. Fokus Anda adalah:
-- ✅ Setup infrastructure (MongoDB, Vercel)
-- ✅ Configure CI/CD pipeline
-- ✅ Deploy ke production
-- ✅ Monitor dan maintain
-
-Jika ada pertanyaan atau kesulitan, jangan ragu untuk bertanya atau melihat referensi dari finished project.
-
----
-
-## 📚 Quick Reference
-
-### Local Development
-
-```bash
-# Install dependencies
-pnpm install
-
-# Run backend
-pnpm --filter backend dev
-
-# Run frontend
-pnpm --filter frontend dev
-
-# Run both
+cd apps/frontend
 pnpm dev
 ```
 
-### Deployment Commands
+Server frontend akan berjalan di: http://localhost:5173
+
+### 6. Testing API
+
+**Menggunakan Browser:**
+
+Buka browser dan akses:
+- Frontend: http://localhost:5173
+- Backend Health: http://localhost:3001/health
+- Backend API Info: http://localhost:3001
+
+**Menggunakan Postman:**
+
+1. Download dan install Postman dari https://www.postman.com/downloads/
+2. Buka Postman
+3. Klik "Import" di pojok kiri atas
+4. Pilih tab "File"
+5. Klik "Choose Files" atau drag & drop file `todo-api.postman_collection.json` dari root project
+6. Klik "Import"
+7. Collection "Todo API - Vercel" akan muncul di sidebar kiri
+8. Expand collection untuk melihat semua endpoints
+
+**Cara Test dengan Postman:**
+
+Step 1: Test Health Check
+- Klik "Health Check" > "Root - API Info"
+- Klik tombol "Send"
+- Verifikasi response berisi informasi API
+
+Step 2: Register User Baru
+- Klik "Auth" > "Register"
+- Di tab "Body", edit email dan password sesuai kebutuhan
+- Klik "Send"
+- Verifikasi response status 201 dan dapat token
+
+Step 3: Login
+- Klik "Auth" > "Login"
+- Edit email dan password (sama dengan yang digunakan saat register)
+- Klik "Send"
+- Token akan otomatis disimpan ke variable `auth_token`
+- Verifikasi response status 200
+
+Step 4: Test Todos Endpoints (Butuh Token)
+- Klik "Todos" > "Get All Todos"
+- Token sudah otomatis ditambahkan di Authorization header
+- Klik "Send"
+- Verifikasi response berisi array todos (kosong jika belum ada)
+
+Step 5: Create Todo
+- Klik "Todos" > "Create Todo"
+- Edit title di body request
+- Klik "Send"
+- Copy `_id` dari response untuk testing update/delete
+
+Step 6: Update Todo
+- Klik "Todos" > "Update Todo"
+- Klik tab "Params"
+- Ganti `:id` dengan todo ID yang di-copy tadi
+- Edit title atau completed di body request
+- Klik "Send"
+
+Step 7: Delete Todo
+- Klik "Todos" > "Delete Todo"
+- Ganti `:id` dengan todo ID
+- Klik "Send"
+
+**Ganti Base URL untuk Production:**
+
+Setelah deploy ke Vercel, update base URL:
+1. Klik collection "Todo API - Vercel"
+2. Klik tab "Variables"
+3. Ganti value `base_url` dari `http://localhost:3001` ke URL Vercel (contoh: `https://your-backend.vercel.app`)
+4. Klik "Save"
+
+## Deployment ke Vercel
+
+### Step 1: Setup MongoDB Atlas untuk Production
+
+1. Login ke MongoDB Atlas
+2. Pastikan IP whitelist sudah diset `0.0.0.0/0`
+3. Copy connection string untuk production
+
+### Step 2: Deploy Backend ke Vercel
+
+1. Login ke Vercel Dashboard: https://vercel.com
+2. Klik "Add New Project"
+3. Import repository dari GitHub
+4. Configure project:
+   - Project Name: `nama-project-backend`
+   - Root Directory: KOSONGKAN (biarkan kosong)
+   - Framework Preset: Other
+   - Build Command: (kosongkan)
+   - Output Directory: (kosongkan)
+5. Add Environment Variables:
+   - `MONGODB_URI` = connection string dari MongoDB Atlas
+   - `JWT_SECRET` = secret key yang sama dengan development (minimal 32 karakter)
+   - `JWT_EXPIRES_IN` = `7d`
+   - `NODE_ENV` = `production`
+6. Deploy
+7. Copy deployment URL (contoh: `https://your-backend.vercel.app`)
+8. Di Settings > General, copy Project ID
+9. Matikan "Auto Deploy" di Settings > Git
+
+### Step 3: Deploy Frontend ke Vercel
+
+1. Di Vercel Dashboard, klik "Add New Project" lagi
+2. Import repository yang sama dari GitHub
+3. Configure project:
+   - Project Name: `nama-project-frontend`
+   - Root Directory: KOSONGKAN (biarkan kosong)
+   - Framework Preset: Vite (auto-detect)
+   - Build Command: `pnpm build`
+   - Output Directory: `dist`
+4. Add Environment Variables:
+   - `VITE_API_URL` = Backend URL dari step sebelumnya
+5. Deploy
+6. Di Settings > General, copy Project ID
+7. Matikan "Auto Deploy" di Settings > Git
+
+### Step 4: Setup GitHub Secrets untuk CI/CD
+
+Go to: GitHub Repository > Settings > Secrets and variables > Actions
+
+Tambahkan secrets berikut:
+
+**Required:**
+- `VERCEL_TOKEN` - Generate di https://vercel.com/account/tokens
+- `VERCEL_USER_ID` - Copy dari Vercel Settings > General (User ID)
+- `VERCEL_BACKEND_PROJECT_ID` - Project ID backend dari Vercel
+- `VERCEL_FRONTEND_PROJECT_ID` - Project ID frontend dari Vercel
+
+**Optional (jika ingin override):**
+- `MONGODB_URI`
+- `JWT_SECRET`
+- `JWT_EXPIRES_IN`
+- `VITE_API_URL`
+
+### Step 5: CI/CD Otomatis
+
+Setelah setup secrets, setiap push ke branch `main` akan otomatis:
+1. Run tests
+2. Build frontend
+3. Deploy frontend ke Vercel
+4. Deploy backend ke Vercel
+
+## Logging Configuration
+
+Aplikasi ini menggunakan **Winston** untuk detailed logging yang dapat dilihat di Vercel atau console development.
+
+### Log Levels
+- `error` - Error dan exceptions (status code >= 500)
+- `warn` - Warning (status code >= 400)
+- `http` - HTTP requests (status code 2xx-3xx)
+- `info` - Informasi umum
+- `debug` - Debug information
+
+### Environment Variable
+```env
+LOG_LEVEL=info  # Optional, default: info
+                # Options: error, warn, info, http, debug
+```
+
+### Format Log
+Setiap log memiliki format:
+```
+2024-01-15 10:30:45 [INFO]: Message
+{
+  "metadata": "additional context"
+}
+```
+
+### Log Types
+
+**HTTP Request Logs:**
+```json
+{
+  "method": "POST",
+  "url": "/api/todos",
+  "status": 201,
+  "duration": "45ms",
+  "ip": "127.0.0.1",
+  "userAgent": "PostmanRuntime/7.28.4"
+}
+```
+
+**Database Operation Logs:**
+```json
+{
+  "operation": "create",
+  "collection": "todos",
+  "userId": "65a1b2c3d4e5f6789012345",
+  "details": {...}
+}
+```
+
+**Authentication Logs:**
+```json
+{
+  "action": "login_success",
+  "userId": "65a1b2c3d4e5f6789012345",
+  "email": "user@example.com"
+}
+```
+
+**Error Logs (dengan stack trace):**
+```json
+{
+  "message": "Error message",
+  "stack": "Error: ...\n    at ...",
+  "context": "additional_context"
+}
+```
+
+### Melihat Logs di Vercel
+1. Go to Vercel Dashboard
+2. Pilih project backend
+3. Klik tab "Logs"
+4. Logs akan muncul real-time dengan warna dan format yang rapi
+
+## 404 Error Handling
+
+Semua endpoint yang tidak ditemukan akan mengembalikan response JSON yang jelas:
+
+### Response Format
+```json
+{
+  "success": false,
+  "error": "Not Found",
+  "message": "Endpoint GET /api/invalid tidak ditemukan",
+  "path": "/api/invalid",
+  "method": "GET",
+  "availableEndpoints": {
+    "root": {
+      "method": "GET",
+      "path": "/",
+      "description": "API information"
+    },
+    "health": {
+      "method": "GET",
+      "path": "/health",
+      "description": "Simple health check"
+    },
+    "auth": {
+      "register": {
+        "method": "POST",
+        "path": "/api/auth/register",
+        "description": "Register new user"
+      },
+      "login": {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "description": "Login user"
+      }
+    },
+    "todos": {
+      "list": {
+        "method": "GET",
+        "path": "/api/todos",
+        "description": "Get all todos (requires auth)"
+      }
+    }
+  },
+  "timestamp": "2024-01-15T10:30:45.123Z"
+}
+```
+
+### Testing 404 Response
+Gunakan Postman collection yang sudah disediakan di folder "Error Handling" untuk test 404 response.
+
+## API Endpoints
+
+### Authentication
+- `POST /api/auth/register` - Register user baru
+- `POST /api/auth/login` - Login user
+
+### Todos (Protected - Butuh JWT Token)
+- `GET /api/todos` - Get semua todos
+- `POST /api/todos` - Create todo baru
+- `PUT /api/todos/:id` - Update todo
+- `DELETE /api/todos/:id` - Delete todo
+
+### Health Check
+- `GET /` - API information
+- `GET /health` - Simple health check
+- `GET /health-checks` - Detailed health check
+
+## Build Commands
 
 ```bash
-# Build all
+# Build semua apps
 pnpm build
 
-# Test
-pnpm test
+# Build backend saja
+pnpm --filter backend build
 
-# Deploy (via GitHub Actions)
-git push origin main
+# Build frontend saja
+pnpm --filter frontend build
 ```
 
-### Important URLs
+## Testing
 
-**Local:**
-- Frontend: http://localhost:5173
-- Backend: http://localhost:3001
-- API Docs: http://localhost:3001/api-docs
+```bash
+# Run semua tests
+pnpm test
 
-**Production (setelah deployment):**
-- Frontend: `https://your-frontend.vercel.app`
-- Backend: `https://your-backend.vercel.app`
-- API Docs: `https://your-backend.vercel.app/api-docs`
+# Test backend saja
+pnpm --filter backend test
+```
 
+## Troubleshooting
+
+### Issue: pnpm command not found
+
+**Solusi:**
+```bash
+npm install -g pnpm
+```
+
+### Issue: MongoDB connection error - authentication failed
+
+**Kemungkinan Penyebab:**
+- Username atau password salah di connection string
+- User belum dibuat di MongoDB Atlas
+
+**Solusi:**
+1. Cek username dan password di MongoDB Atlas
+2. Pastikan connection string benar:
+   ```
+   mongodb+srv://USERNAME:PASSWORD@cluster.mongodb.net/DATABASE_NAME
+   ```
+3. Pastikan tidak ada karakter special di password yang perlu di-encode
+
+### Issue: MongoDB connection error - ENOTFOUND atau getaddrinfo
+
+**Kemungkinan Penyebab:**
+- Connection string salah
+- Cluster belum selesai dibuat
+- Network issue
+
+**Solusi:**
+1. Cek format connection string sudah benar
+2. Tunggu cluster selesai dibuat (3-5 menit)
+3. Test koneksi internet
+
+### Issue: MongoDB connection error - timeout
+
+**Kemungkinan Penyebab:**
+- IP tidak ada di whitelist
+- Network firewall blocking
+
+**Solusi:**
+1. Di MongoDB Atlas > Network Access, tambahkan IP `0.0.0.0/0`
+2. Cek firewall atau antivirus tidak blocking port 27017
+
+### Issue: JWT Authentication error - Invalid token
+
+**Kemungkinan Penyebab:**
+- JWT_SECRET berbeda antara backend yang generate token dan yang verify
+- Token sudah expired
+
+**Solusi:**
+1. Pastikan JWT_SECRET sama di semua environment
+2. Logout dan login ulang untuk dapat token baru
+
+### Issue: Frontend tidak bisa connect ke Backend
+
+**Kemungkinan Penyebab:**
+- VITE_API_URL salah atau tidak diset
+- Backend tidak berjalan
+- CORS issue
+
+**Solusi:**
+1. Cek VITE_API_URL di `.env` frontend sudah benar
+2. Pastikan backend sudah berjalan
+3. Test backend di browser: `http://localhost:3001/health`
+4. Clear browser cache dan restart dev server
+
+### Issue: Vercel Deployment Failed - Project Not Found
+
+**Kemungkinan Penyebab:**
+- Project ID salah
+- Token tidak punya akses ke project
+
+**Solusi:**
+1. Cek Project ID di Vercel Settings > General
+2. Pastikan VERCEL_TOKEN punya akses ke project
+3. Regenerate token jika perlu
+
+### Issue: Vercel Build Failed - pnpm not found
+
+**Solusi:**
+Di `vercel.json`, pastikan ada:
+```json
+{
+  "installCommand": "npm install -g pnpm && pnpm install"
+}
+```
+
+### Issue: Frontend build error - env variables undefined
+
+**Kemungkinan Penyebab:**
+- Environment variables di Vercel belum diset
+- Prefix `VITE_` tidak digunakan
+
+**Solusi:**
+1. Di Vercel Project Settings > Environment Variables, set `VITE_API_URL`
+2. Pastikan semua env variables di frontend pakai prefix `VITE_`
+3. Redeploy setelah set env variables
+
+### Issue: Backend API error 500 saat production
+
+**Kemungkinan Penyebab:**
+- Environment variables tidak diset di Vercel
+- MongoDB connection string salah
+
+**Solusi:**
+1. Cek Vercel Functions logs untuk error detail
+2. Pastikan MONGODB_URI dan JWT_SECRET sudah diset di Vercel
+3. Test MongoDB connection string di local dulu
+
+### Issue: CORS error saat frontend hit backend
+
+**Kemungkinan Penyebab:**
+- Backend tidak mengizinkan origin dari frontend
+
+**Solusi:**
+Backend sudah include middleware `cors()` tanpa restriction, seharusnya tidak ada CORS error. Jika masih ada:
+1. Cek browser console untuk error detail
+2. Pastikan frontend pakai HTTPS jika backend pakai HTTPS
+
+### Issue: Todo tidak muncul setelah create
+
+**Kemungkinan Penyebab:**
+- Error saat save ke database tapi tidak keliatan di UI
+- Frontend tidak refresh data setelah create
+
+**Solusi:**
+1. Cek browser console untuk error
+2. Cek Network tab untuk response dari API
+3. Cek MongoDB Atlas untuk verify data tersimpan
+4. Refresh halaman manual
+
+## Free Tier Limits
+
+### Vercel
+
+**Backend (Serverless Functions):**
+- 100GB bandwidth per bulan
+- 100GB-hours function execution per bulan
+- Unlimited deployments
+- Auto-scaling
+- No credit card required
+
+**Frontend (Static Site):**
+- Unlimited deployments
+- Unlimited bandwidth (personal projects)
+- Global CDN
+- No credit card required
+
+### MongoDB Atlas
+
+- 512MB storage (Free Tier M0)
+- Shared cluster
+- No credit card required
+- Perfect untuk development dan small production apps
+
+## Additional Documentation
+
+- Backend README: [apps/backend/README.md](apps/backend/README.md)
+- Frontend README: [apps/frontend/README.md](apps/frontend/README.md)
+
+## Contributing
+
+1. Create feature branch
+2. Make changes
+3. Run tests: `pnpm test`
+4. Submit pull request
+
+## License
+
+ISC
+
+## Resources
+
+- [Vercel Documentation](https://vercel.com/docs)
+- [MongoDB Atlas Documentation](https://docs.atlas.mongodb.com)
+- [GitHub Actions Documentation](https://docs.github.com/en/actions)
+- [Express Documentation](https://expressjs.com)
+- [React Documentation](https://react.dev)

@@ -1,7 +1,7 @@
 {
-  "name": "monorepo-todo-auth-vercel-starter",
+  "name": "monorepo-todo-auth-vercel-finished",
   "version": "1.0.0",
-  "description": "Fullstack Todo application with authentication - Starter Project",
+  "description": "Fullstack Todo application with authentication - Vercel",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -26,4 +26,3 @@
   },
   "packageManager": "pnpm@9.0.0"
 }
-

@@ -5,6 +5,8 @@
       "main": false
     }
   },
+  "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
+  "buildCommand": "",
   "builds": [
     {
       "src": "api/index.js",
@@ -17,15 +19,19 @@
       "dest": "/api/index.js"
     },
     {
-      "src": "/api-docs/(.*)",
-      "dest": "/api/index.js"
-    },
-    {
       "src": "/health",
       "dest": "/api/index.js"
     },
     {
       "src": "/health-checks",
+      "dest": "/api/index.js"
+    },
+    {
+      "src": "/",
+      "dest": "/api/index.js"
+    },
+    {
+      "src": "/(.*)",
       "dest": "/api/index.js"
     }
   ],
@@ -33,4 +39,3 @@
     "NODE_ENV": "production"
   }
 }
-

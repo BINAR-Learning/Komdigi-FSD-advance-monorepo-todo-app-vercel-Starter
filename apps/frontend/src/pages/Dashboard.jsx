@@ -7,8 +7,21 @@ function Dashboard({ onLogout }) {
   const [newTodo, setNewTodo] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [editingId, setEditingId] = useState(null);
+  const [editText, setEditText] = useState('');
+  const [userEmail, setUserEmail] = useState('');
 
   useEffect(() => {
+    // Get user email from localStorage
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      try {
+        const user = JSON.parse(savedUser);
+        setUserEmail(user.email || '');
+      } catch (e) {
+        console.error('Failed to parse user data');
+      }
+    }
     fetchTodos();
   }, []);
 
@@ -16,8 +29,13 @@ function Dashboard({ onLogout }) {
     try {
       const response = await api.get('/api/todos');
       setTodos(response.data);
+      setError(''); // Clear any previous errors
     } catch (err) {
-      setError('Failed to fetch todos');
+      // Jangan tampilkan error saat pertama kali load
+      // User mungkin belum punya todos atau ada network delay
+      console.error('Fetch todos error:', err);
+      // Set empty array jika gagal
+      setTodos([]);
     } finally {
       setLoading(false);
     }
@@ -56,6 +74,31 @@ function Dashboard({ onLogout }) {
     }
   };
 
+  const handleEdit = (todo) => {
+    setEditingId(todo._id);
+    setEditText(todo.title);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setEditText('');
+  };
+
+  const handleSaveEdit = async (id) => {
+    if (!editText.trim()) return;
+
+    try {
+      const response = await api.put(`/api/todos/${id}`, {
+        title: editText,
+      });
+      setTodos(todos.map((todo) => (todo._id === id ? response.data : todo)));
+      setEditingId(null);
+      setEditText('');
+    } catch (err) {
+      setError('Failed to update todo');
+    }
+  };
+
   const handleLogout = () => {
     removeToken();
     onLogout();
@@ -72,7 +115,7 @@ function Dashboard({ onLogout }) {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h1 style={styles.title}>My Todos</h1>
+        <h1 style={styles.title}>{userEmail ? `${userEmail} Todos` : 'My Todos'}</h1>
         <button onClick={handleLogout} style={styles.logoutButton}>
           Logout
         </button>
@@ -105,21 +148,53 @@ function Dashboard({ onLogout }) {
                 onChange={() => handleToggleComplete(todo._id, todo.completed)}
                 style={styles.checkbox}
               />
-              <span
-                style={{
-                  ...styles.todoText,
-                  textDecoration: todo.completed ? 'line-through' : 'none',
-                  opacity: todo.completed ? 0.6 : 1,
-                }}
-              >
-                {todo.title}
-              </span>
-              <button
-                onClick={() => handleDelete(todo._id)}
-                style={styles.deleteButton}
-              >
-                Delete
-              </button>
+              {editingId === todo._id ? (
+                <>
+                  <input
+                    type="text"
+                    value={editText}
+                    onChange={(e) => setEditText(e.target.value)}
+                    style={styles.editInput}
+                    autoFocus
+                  />
+                  <button
+                    onClick={() => handleSaveEdit(todo._id)}
+                    style={styles.saveButton}
+                  >
+                    Save
+                  </button>
+                  <button
+                    onClick={handleCancelEdit}
+                    style={styles.cancelButton}
+                  >
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <>
+                  <span
+                    style={{
+                      ...styles.todoText,
+                      textDecoration: todo.completed ? 'line-through' : 'none',
+                      opacity: todo.completed ? 0.6 : 1,
+                    }}
+                  >
+                    {todo.title}
+                  </span>
+                  <button
+                    onClick={() => handleEdit(todo)}
+                    style={styles.editButton}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(todo._id)}
+                    style={styles.deleteButton}
+                  >
+                    Delete
+                  </button>
+                </>
+              )}
             </div>
           ))
         )}
@@ -196,6 +271,39 @@ const styles = {
     fontSize: '16px',
     color: '#333',
   },
+  editInput: {
+    flex: 1,
+    padding: '8px',
+    border: '1px solid #ddd',
+    borderRadius: '4px',
+    fontSize: '14px',
+  },
+  editButton: {
+    padding: '6px 12px',
+    backgroundColor: '#28a745',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    marginRight: '8px',
+  },
+  saveButton: {
+    padding: '6px 12px',
+    backgroundColor: '#007bff',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    marginRight: '8px',
+  },
+  cancelButton: {
+    padding: '6px 12px',
+    backgroundColor: '#6c757d',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+  },
   deleteButton: {
     padding: '6px 12px',
     backgroundColor: '#dc3545',
@@ -224,3 +332,4 @@ const styles = {
 };
 
 export default Dashboard;
+

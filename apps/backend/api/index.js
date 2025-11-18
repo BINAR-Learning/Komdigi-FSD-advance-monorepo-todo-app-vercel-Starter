@@ -1,25 +1,27 @@
-// Vercel Serverless Function wrapper for Express app
 import app, { connectDB } from "../src/app.js";
 
-// Connect to MongoDB on cold start
-let dbConnected = false;
-
-// Vercel serverless function handler
+// Handler utama untuk Vercel Serverless Functions
+// Menggunakan Express app yang sudah di-setup lengkap di src/app.js
+// dengan semua middleware (logger, CORS, error handler, 404 handler)
 export default async function handler(req, res) {
-  // Connect to MongoDB if not already connected
-  if (!dbConnected) {
-    try {
-      await connectDB();
-      dbConnected = true;
-    } catch (error) {
-      console.error("Failed to connect to MongoDB:", error);
-      return res.status(500).json({
-        error: "Database connection failed",
-        message: error.message,
+  try {
+    // Koneksi ke MongoDB Atlas
+    await connectDB();
+    
+    // Jalankan Express app untuk handle request
+    // App sudah include semua routes, middleware, dan error handlers
+    app(req, res);
+  } catch (error) {
+    // Log error dengan proper logger (akan tampil di Vercel logs)
+    console.error('Handler error:', error);
+    
+    // Return JSON error response
+    if (!res.headersSent) {
+      res.status(500).json({ 
+        success: false,
+        error: 'Internal server error',
+        message: error.message 
       });
     }
   }
-
-  // Handle the request with Express app
-  return app(req, res);
 }
