@@ -39,7 +39,7 @@ Fullstack Todo application dengan authentication, deployed menggunakan Vercel (B
 ## Project Structure
 
 ```
-monorepo-todo-auth-vercel-finished/
+monorepo-todo-auth-vercel-starter/
 ├── apps/
 │   ├── backend/              # Express API server (Vercel Serverless)
 │   │   ├── api/              # Vercel serverless function wrapper
@@ -81,7 +81,7 @@ npm install -g pnpm
 
 ```bash
 git clone <repository-url>
-cd monorepo-todo-auth-vercel-finished
+cd monorepo-todo-auth-vercel-starter
 ```
 
 ### 2. Install Dependencies
