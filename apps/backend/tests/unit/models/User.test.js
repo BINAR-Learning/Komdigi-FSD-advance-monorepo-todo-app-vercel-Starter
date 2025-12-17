@@ -17,7 +17,7 @@ describe('User Model Tests', () => {
       }
       mongoAvailable = mongoose.connection.readyState === 1;
     } catch (error) {
-      console.log('\n⚠️  MongoDB not available - database tests will be skipped');
+      console.log('\nWARNING: MongoDB not available - database tests will be skipped');
       console.log('   To run these tests, start MongoDB or set MONGODB_URI\n');
       mongoAvailable = false;
     }

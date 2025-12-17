@@ -25,7 +25,7 @@ describe('Todo Model Tests', () => {
         }).save();
       }
     } catch (error) {
-      console.log('\n⚠️  MongoDB not available - database tests will be skipped\n');
+      console.log('\nWARNING: MongoDB not available - database tests will be skipped\n');
       mongoAvailable = false;
     }
   });
@@ -192,14 +192,14 @@ describe('Todo Model Tests', () => {
 
       // Pastikan testUser ada
       if (!testUser || !testUser._id) {
-        console.log('⚠️ Test user not available - skipping populate test');
+        console.log('WARNING: Test user not available - skipping populate test');
         return;
       }
 
       // Verify user exists in DB
       const userExists = await User.findById(testUser._id);
       if (!userExists) {
-        console.log('⚠️ Test user not found in DB - skipping populate test');
+        console.log('WARNING: Test user not found in DB - skipping populate test');
         return;
       }
 

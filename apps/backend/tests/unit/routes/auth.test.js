@@ -25,7 +25,7 @@ describe('Auth Routes Tests', () => {
       app.use(express.json());
       app.use('/api/auth', authRoutes);
     } catch (error) {
-      console.log('\n⚠️  MongoDB not available - route tests will be skipped\n');
+      console.log('\nWARNING: MongoDB not available - route tests will be skipped\n');
       mongoAvailable = false;
     }
   });

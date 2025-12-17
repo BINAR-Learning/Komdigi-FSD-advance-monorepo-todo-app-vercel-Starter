@@ -43,7 +43,7 @@ describe('Todos Routes Tests', () => {
         );
       }
     } catch (error) {
-      console.log('\n⚠️  MongoDB not available - route tests will be skipped\n');
+      console.log('\nWARNING: MongoDB not available - route tests will be skipped\n');
       mongoAvailable = false;
     }
   });

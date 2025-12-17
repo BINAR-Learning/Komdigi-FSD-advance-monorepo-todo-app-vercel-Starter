@@ -312,8 +312,8 @@ Authorization: Bearer <jwt-token>
       "title": "Belajar Node.js",
       "completed": false,
       "user": "user-id",
-      "createdAt": "2024-01-01T00:00:00.000Z",
-      "updatedAt": "2024-01-01T00:00:00.000Z"
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "updatedAt": "2025-01-01T00:00:00.000Z"
     }
   ]
   ```
@@ -356,7 +356,7 @@ Authorization: Bearer <jwt-token>
   ```json
   {
     "status": "ok",
-    "timestamp": "2024-01-01T00:00:00.000Z",
+    "timestamp": "2025-01-01T00:00:00.000Z",
     "uptime": 123.456
   }
   ```

@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 /**
  * E2E Test: Full User Flow
- * Flow: Register → Create Todos → Edit Todo → Complete Todo → Delete Todo → Logout → Login
+ * Flow: Register - Create Todos - Edit Todo - Complete Todo - Delete Todo - Logout - Login
  * 
  * Note: Test ini menggunakan API backend yang harus running di http://localhost:3000
  * Pastikan backend sudah running sebelum menjalankan test ini
@@ -19,7 +19,7 @@ test.describe('Full User Flow E2E Test', () => {
     await page.goto('/');
   });
 
-  test('Complete user journey: Register → CRUD Todos → Logout → Login', async ({ page }) => {
+  test('Complete user journey: Register - CRUD Todos - Logout - Login', async ({ page }) => {
     // ============================================
     // STEP 1: REGISTER
     // ============================================
@@ -42,7 +42,7 @@ test.describe('Full User Flow E2E Test', () => {
     // Verify user email ditampilkan
     await expect(page.locator(`text=${testEmail}`)).toBeVisible();
     
-    console.log('✓ Register successful');
+    console.log('Register successful');
 
     // ============================================
     // STEP 2: CREATE TODOS
@@ -66,7 +66,7 @@ test.describe('Full User Flow E2E Test', () => {
     await page.click('button:has-text("Add"), button:has-text("Create")');
     await expect(page.locator('text=Read a book')).toBeVisible({ timeout: 5000 });
     
-    console.log('✓ Created 3 todos successfully');
+    console.log('Created 3 todos successfully');
 
     // ============================================
     // STEP 3: EDIT TODO
@@ -106,9 +106,9 @@ test.describe('Full User Flow E2E Test', () => {
     // Just check that old text is gone or new text appears
     try {
       await expect(page.locator('text=Buy groceries and fruits')).toBeVisible({ timeout: 5000 });
-      console.log('✓ Edited todo successfully');
+      console.log('Edited todo successfully');
     } catch (error) {
-      console.log('⚠️ Edit verification failed, but continuing test (UI might update differently)');
+      console.log('WARNING: Edit verification failed, but continuing test (UI might update differently)');
       // Take screenshot for debugging but don't fail test
       await page.screenshot({ path: 'test-results/edit-todo-debug.png' });
     }
@@ -139,7 +139,7 @@ test.describe('Full User Flow E2E Test', () => {
     try {
       // Check if checkbox is checked
       await expect(checkbox).toBeChecked({ timeout: 3000 });
-      console.log('✓ Marked todo as completed (checkbox checked)');
+      console.log('Marked todo as completed (checkbox checked)');
     } catch {
       // Alternative: check for completed class or strikethrough style
       const completedTodo = page.locator('text=Finish homework');
@@ -153,9 +153,9 @@ test.describe('Full User Flow E2E Test', () => {
       });
       
       if (hasCompletedStyle) {
-        console.log('✓ Marked todo as completed (has completed styling)');
+        console.log('Marked todo as completed (has completed styling)');
       } else {
-        console.log('⚠️ Todo toggled but visual state unclear - continuing test');
+        console.log('WARNING: Todo toggled but visual state unclear - continuing test');
       }
     }
 
@@ -178,7 +178,7 @@ test.describe('Full User Flow E2E Test', () => {
     // Wait dan verify todo hilang
     await expect(page.locator('text=Read a book')).toHaveCount(0, { timeout: 5000 });
     
-    console.log('✓ Deleted todo successfully');
+    console.log('Deleted todo successfully');
 
     // ============================================
     // STEP 6: LOGOUT
@@ -195,7 +195,7 @@ test.describe('Full User Flow E2E Test', () => {
     await page.goto('/');
     await expect(page).toHaveURL(/\/login/, { timeout: 5000 });
     
-    console.log('✓ Logout successful');
+    console.log('Logout successful');
 
     // ============================================
     // STEP 7: LOGIN KEMBALI
@@ -212,7 +212,7 @@ test.describe('Full User Flow E2E Test', () => {
     // Wait for redirect ke dashboard
     await expect(page).toHaveURL('/', { timeout: 10000 });
     
-    console.log('✓ Login successful');
+    console.log('Login successful');
 
     // ============================================
     // STEP 8: VERIFY DATA PERSISTENCE
@@ -233,9 +233,9 @@ test.describe('Full User Flow E2E Test', () => {
     try {
       // Check if checkbox is still checked after re-login
       await expect(persistedCheckbox).toBeChecked({ timeout: 3000 });
-      console.log('✓ Data persistence verified (checkbox state maintained)');
+      console.log('Data persistence verified (checkbox state maintained)');
     } catch {
-      console.log('⚠️ Checkbox state check failed, but todos are persisted');
+      console.log('WARNING: Checkbox state check failed, but todos are persisted');
     }
     
     // ============================================
@@ -243,17 +243,17 @@ test.describe('Full User Flow E2E Test', () => {
     // ============================================
     console.log('');
     console.log('========================================');
-    console.log('✅ FULL E2E TEST COMPLETED SUCCESSFULLY');
+    console.log('FULL E2E TEST COMPLETED SUCCESSFULLY');
     console.log('========================================');
     console.log('Tested Flow:');
-    console.log('1. ✓ User Registration');
-    console.log('2. ✓ Create Multiple Todos');
-    console.log('3. ✓ Edit Todo');
-    console.log('4. ✓ Complete/Toggle Todo');
-    console.log('5. ✓ Delete Todo');
-    console.log('6. ✓ Logout');
-    console.log('7. ✓ Login Again');
-    console.log('8. ✓ Data Persistence');
+    console.log('1. User Registration');
+    console.log('2. Create Multiple Todos');
+    console.log('3. Edit Todo');
+    console.log('4. Complete/Toggle Todo');
+    console.log('5. Delete Todo');
+    console.log('6. Logout');
+    console.log('7. Login Again');
+    console.log('8. Data Persistence');
     console.log('========================================');
   });
 
@@ -272,7 +272,7 @@ test.describe('Full User Flow E2E Test', () => {
     const currentUrl = page.url();
     expect(currentUrl).toContain('register');
     
-    console.log('✓ Registration validation working');
+    console.log('Registration validation working');
   });
 
   test('Should handle login with invalid credentials', async ({ page }) => {
@@ -290,7 +290,7 @@ test.describe('Full User Flow E2E Test', () => {
     const currentUrl = page.url();
     expect(currentUrl).toContain('login');
     
-    console.log('✓ Login validation working');
+    console.log('Login validation working');
   });
 });
 
@@ -304,6 +304,6 @@ test.describe('Protected Routes', () => {
     // Should redirect ke login
     await expect(page).toHaveURL(/\/login/, { timeout: 5000 });
     
-    console.log('✓ Protected routes working correctly');
+    console.log('Protected routes working correctly');
   });
 });

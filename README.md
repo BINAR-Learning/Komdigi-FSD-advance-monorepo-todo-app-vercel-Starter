@@ -1,4 +1,4 @@
-# Todo Application - Fullstack Monorepo (Vercel)
+# Komdigi-FSD-advance-monorepo-todo-app-vercel-Starter
 
 Fullstack Todo application dengan authentication, deployed menggunakan Vercel (Backend + Frontend) dengan CI/CD via GitHub Actions.
 
@@ -39,7 +39,7 @@ Fullstack Todo application dengan authentication, deployed menggunakan Vercel (B
 ## Project Structure
 
 ```
-monorepo-todo-auth-vercel-starter/
+Komdigi-FSD-advance-monorepo-todo-app-vercel-Starter/
 ├── apps/
 │   ├── backend/              # Express API server (Vercel Serverless)
 │   │   ├── api/              # Vercel serverless function wrapper
@@ -75,13 +75,129 @@ Sebelum memulai, pastikan Anda sudah memiliki:
 npm install -g pnpm
 ```
 
+## WAJIB: Setup Backend dan Frontend dari Modul Sebelumnya
+
+PENTING: Project ini adalah monorepo starter yang dapat digunakan standalone ATAU dengan backend dan frontend final dari modul Intermediate Program. Jika Anda ingin menggunakan backend dan frontend final dari modul sebelumnya, ikuti instruksi di bawah ini.
+
+### Opsi A: Menggunakan Backend dan Frontend Final dari Modul Intermediate
+
+Jika Anda ingin menggunakan backend final dari Modul 5 dan frontend final dari Modul 3, pastikan keduanya sudah running sebelum menjalankan project ini.
+
+**Terminal 1: Setup dan Start Backend (Modul 5 - Final Backend Project)**
+
+```bash
+# 1. Navigate ke Backend Modul 5 (Final Backend Project dari Intermediate Program)
+cd ../../backend/health-ecommerce-external-integration/finished-project
+
+# 2. Install dependencies (jika belum)
+npm install
+
+# 3. Setup .env file dengan API keys yang diperlukan:
+# Buat file .env di folder finished-project backend
+# Isi dengan:
+# PORT=5000
+# MONGODB_URI=mongodb://localhost:27017/health_ecommerce
+# JWT_SECRET=your_jwt_secret_key
+# GEMINI_API_KEY=your_google_gemini_api_key
+# MIDTRANS_SERVER_KEY=your_midtrans_server_key
+# MIDTRANS_CLIENT_KEY=your_midtrans_client_key
+# CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+# CLOUDINARY_API_KEY=your_cloudinary_api_key
+# CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+
+# 4. Pastikan MongoDB running
+# PENTING: MongoDB harus running sebelum menjalankan backend dan tests
+# 
+# Opsi A (RECOMMENDED): Menggunakan MongoDB Compass atau MongoDB Atlas
+# - Buka MongoDB Compass
+# - Connect ke database: mongodb://localhost:27017
+# - Jika berhasil connect, berarti MongoDB sudah running
+# - Atau gunakan connection string dari MongoDB Atlas jika menggunakan cloud database
+# 
+# Opsi B: Menggunakan MongoDB Service (Windows Service / macOS Service)
+# - Pastikan MongoDB service sudah running di system services
+# - Windows: Check Services app, cari "MongoDB"
+# - macOS: Check Activity Monitor atau system preferences
+# 
+# Opsi C: Menggunakan mongod command (jika opsi A dan B tidak tersedia)
+# - Buka terminal baru
+# - Jalankan: mongod
+# - Pastikan MongoDB service running
+# 
+# CATATAN: Jika mongod tidak jalan di local, tidak perlu dipaksakan
+# Gunakan MongoDB Compass untuk cek apakah database sudah accessible
+# Atau gunakan MongoDB Atlas (cloud) sebagai alternatif
+
+# 5. Seed database dengan sample data (jika ada)
+npm run seed
+
+# 6. Start backend server (keep running di terminal ini!)
+npm run dev
+
+# Backend akan running di: http://localhost:5000
+# Pastikan backend URL ini sama dengan VITE_API_URL di frontend .env
+```
+
+**VERIFIKASI BACKEND:**
+```bash
+# Test backend health endpoint
+curl http://localhost:5000/health
+# Should return: {"success":true,"message":"Server is running"}
+
+# Atau buka di browser: http://localhost:5000/health
+```
+
+**Terminal 2: Setup dan Start Frontend (Modul 3 - Final Frontend Project)**
+
+```bash
+# 1. Navigate ke Frontend Modul 3 (Final Frontend Project dari Intermediate Program)
+cd ../../frontend/health-ecommerce-production-uiux/finished-project
+
+# 2. Install dependencies (jika belum)
+npm install
+
+# 3. Setup .env file:
+# Buat file .env di folder finished-project frontend
+# Isi dengan:
+# VITE_API_URL=http://localhost:5000
+
+# PENTING: Pastikan VITE_API_URL sama dengan backend URL yang running!
+# Jika backend running di http://localhost:5000, maka:
+# VITE_API_URL=http://localhost:5000
+
+# 4. Start frontend server (keep running di terminal ini!)
+npm run dev
+
+# Frontend akan running di: http://localhost:3000
+```
+
+**VERIFIKASI FRONTEND:**
+```bash
+# Buka browser: http://localhost:3000
+# Frontend harus load dan bisa connect ke backend
+# Test: Login atau browse products untuk verify API connection
+```
+
+**PENTING: URL Consistency**
+- Backend .env: `PORT=5000` - Backend running di `http://localhost:5000`
+- Frontend .env: `VITE_API_URL=http://localhost:5000` - Frontend connect ke `http://localhost:5000`
+- Semua URL harus konsisten!
+
+**Jika Backend atau Frontend tidak running:**
+- Project ini akan menggunakan backend dan frontend sendiri (standalone mode)
+- Atau pastikan kedua service running sebelum menggunakan fitur yang memerlukan koneksi ke backend/frontend final
+
+### Opsi B: Menggunakan Project Ini Secara Standalone
+
+Project ini dapat digunakan secara standalone tanpa perlu menjalankan backend dan frontend dari modul sebelumnya. Project ini sudah memiliki backend dan frontend sendiri yang dapat dijalankan secara terpisah.
+
 ## Quick Start
 
 ### 1. Clone Repository
 
 ```bash
 git clone <repository-url>
-cd monorepo-todo-auth-vercel-starter
+cd Komdigi-FSD-advance-monorepo-todo-app-vercel-Starter
 ```
 
 ### 2. Install Dependencies
@@ -119,7 +235,11 @@ Edit file `.env` dan isi dengan:
 VITE_API_URL=http://localhost:3001
 ```
 
-### 4. Setup MongoDB Atlas
+### 4. Setup MongoDB
+
+Project ini memerlukan MongoDB untuk menyimpan data. Anda dapat menggunakan MongoDB Atlas (cloud) atau MongoDB lokal.
+
+**Opsi A (RECOMMENDED): Menggunakan MongoDB Atlas (Cloud)**
 
 1. Buat account di https://cloud.mongodb.com (gratis)
 2. Create cluster baru (pilih Free Tier M0)
@@ -128,6 +248,35 @@ VITE_API_URL=http://localhost:3001
 5. Get connection string dari cluster (klik Connect > Connect your application)
 6. Copy connection string ke `MONGODB_URI` di file `.env` backend
 7. Ganti `<username>`, `<password>`, dan nama database sesuai kebutuhan
+
+**Opsi B: Menggunakan MongoDB Lokal dengan MongoDB Compass**
+
+1. Install MongoDB Compass dari https://www.mongodb.com/try/download/compass
+2. Buka MongoDB Compass
+3. Connect ke database lokal: `mongodb://localhost:27017`
+4. Jika berhasil connect, berarti MongoDB sudah running
+5. Buat database baru (contoh: `todo`) di MongoDB Compass
+6. Set `MONGODB_URI` di file `.env` backend: `mongodb://localhost:27017/todo`
+
+**Opsi C: Menggunakan MongoDB Service (Windows/macOS)**
+
+1. Pastikan MongoDB service sudah running di system services
+2. Windows: Check Services app, cari "MongoDB" dan pastikan status "Running"
+3. macOS: Check Activity Monitor atau system preferences untuk MongoDB service
+4. Set `MONGODB_URI` di file `.env` backend: `mongodb://localhost:27017/todo`
+
+**Opsi D: Menggunakan mongod Command (Jika Opsi Lain Tidak Tersedia)**
+
+1. Buka terminal baru
+2. Jalankan: `mongod`
+3. Pastikan MongoDB service running (tidak ada error)
+4. Set `MONGODB_URI` di file `.env` backend: `mongodb://localhost:27017/todo`
+
+**CATATAN PENTING:**
+- Jika mongod tidak jalan di local, tidak perlu dipaksakan
+- Gunakan MongoDB Compass untuk cek apakah database sudah accessible
+- Atau gunakan MongoDB Atlas (cloud) sebagai alternatif yang lebih mudah
+- Untuk development, MongoDB Atlas Free Tier sudah cukup
 
 ### 5. Jalankan Development Server
 
@@ -310,7 +459,7 @@ LOG_LEVEL=info  # Optional, default: info
 ### Format Log
 Setiap log memiliki format:
 ```
-2024-01-15 10:30:45 [INFO]: Message
+2025-01-15 10:30:45 [INFO]: Message
 {
   "metadata": "additional context"
 }
@@ -407,7 +556,7 @@ Semua endpoint yang tidak ditemukan akan mengembalikan response JSON yang jelas:
       }
     }
   },
-  "timestamp": "2024-01-15T10:30:45.123Z"
+  "timestamp": "2025-01-15T10:30:45.123Z"
 }
 ```
 
@@ -467,7 +616,7 @@ pnpm test:e2e
 
 Untuk setup lengkap, troubleshooting, dan advanced testing:
 
-📖 **[TESTING-GUIDE.md](./TESTING-GUIDE.md)** - Comprehensive testing documentation
+**[TESTING-GUIDE.md](./TESTING-GUIDE.md)** - Comprehensive testing documentation
 
 #### Backend Tests
 - **Location**: [`apps/backend/tests/`](./apps/backend/tests/)
@@ -477,7 +626,7 @@ Untuk setup lengkap, troubleshooting, dan advanced testing:
 #### Frontend E2E Tests
 - **Location**: [`apps/frontend/e2e/`](./apps/frontend/e2e/)
 - **Documentation**: [`apps/frontend/E2E-TESTING.md`](./apps/frontend/E2E-TESTING.md)
-- **Flow**: Register → CRUD → Logout → Login
+- **Flow**: Register - CRUD - Logout - Login
 
 **Note**: Known issues dengan Jest + ESM di Windows. Test files sudah lengkap dan valid, hanya ada compatibility issues. Lihat TESTING.md untuk details.
 
